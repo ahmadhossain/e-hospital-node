@@ -32,6 +32,25 @@ app.post("/doctor", (req, res) => {
     res.status(201).send("Created");
   });
 });
+// login
+app.post("/login", (req, res) => {
+  const email = req.body.Email;
+  const password = req.body.Password;
+  console.log(email);
+  console.log(password);
+  Doctor.find({ Email: email, Password: password }, function (err, found) {
+    console.log(found);
+    if (found.length !== 0) res.send(found);
+    else {
+      Paitent.find({ Email: email, Password: password }, function (err, found) {
+        res.send(found);
+      });
+    }
+  });
+  // .then((data) => {
+  //   res.status(201).send("Created");
+  // });
+});
 
 mongoose
   .connect(MONGODB_URL)
