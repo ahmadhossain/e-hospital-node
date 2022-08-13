@@ -5,6 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import Doctor from "./models/doctor.js";
 import Paitent from "./models/patient.js";
+import Schedule from "./models/schedule.js";
 
 const app = express();
 dotenv.config();
@@ -47,9 +48,15 @@ app.post("/login", (req, res) => {
       });
     }
   });
-  // .then((data) => {
-  //   res.status(201).send("Created");
-  // });
+});
+
+// Scedule book
+app.post("/schedule", (req, res) => {
+  const schedule = new Schedule(req.body);
+  console.log(doctor);
+  schedule.save().then((data) => {
+    res.status(201).send("Created");
+  });
 });
 
 mongoose
