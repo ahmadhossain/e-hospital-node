@@ -8,6 +8,7 @@ const DoctorSchema = new mongoose.Schema({
   Result: String,
   Password: String,
   Role: String,
+  Verify: String,
 });
 
 export default mongoose.model("Doctor", DoctorSchema);

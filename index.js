@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import Doctor from "./models/doctor.js";
 import Paitent from "./models/patient.js";
 import Schedule from "./models/schedule.js";
+import Admin from "./models/admin.js";
 
 const app = express();
 dotenv.config();
@@ -44,7 +45,15 @@ app.post("/login", (req, res) => {
     if (found.length !== 0) res.send(found);
     else {
       Paitent.find({ Email: email, Password: password }, function (err, found) {
-        res.send(found);
+        if (found.length !== 0) res.send(found);
+        else {
+          Admin.find(
+            { Email: email, Password: password },
+            function (err, found) {
+              res.send(found);
+            }
+          );
+        }
       });
     }
   });
@@ -53,9 +62,16 @@ app.post("/login", (req, res) => {
 // Scedule book
 app.post("/schedule", (req, res) => {
   const schedule = new Schedule(req.body);
-  console.log(doctor);
+  console.log(schedule);
   schedule.save().then((data) => {
     res.status(201).send("Created");
+  });
+});
+
+// get all appoinment
+app.get("/book", (req, res) => {
+  Schedule.find({ Book: "Not Booked" }, function (err, found) {
+    res.send(found);
   });
 });
 
